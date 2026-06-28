@@ -28,6 +28,9 @@ Auto-detect the project's migration location: `alembic/versions/`,
 
 ### 1. Table creation
 - Every new table has `ENABLE ROW LEVEL SECURITY`.
+- Every new table has `FORCE ROW LEVEL SECURITY`, OR the project confirms its app
+  connects as a non-owner role. Otherwise an app that owns the table bypasses
+  every policy. Flag enabled-but-not-forced tables.
 - Every new table has at least one policy. RLS enabled with no policies blocks all
   reads, which is usually a bug.
 - User-scoped tables have an owner column that policies filter on.
@@ -42,6 +45,9 @@ Auto-detect the project's migration location: `alembic/versions/`,
   write rows they cannot read.
 - No policy uses `USING (true)` on a user-data table unless the migration message
   justifies it.
+- Every policy names a role (`TO authenticated` / `anon` / `service_role`). A
+  policy with no role applies to PUBLIC and runs for every caller, which is
+  usually broader than intended.
 
 ### 3. Joins and views
 - A view over RLS-protected tables still enforces RLS for the invoker.
