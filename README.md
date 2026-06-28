@@ -33,8 +33,12 @@ Add this repo to your Claude Code plugins, then run the skill:
 /security-scan
 ```
 
-The skill detects your stack, checks which scanners are installed (and asks before
-installing any), runs them, and writes `security-scan-report.md`.
+The skill detects your stack, runs the scanners, and writes
+`security-scan-report.md`. On the first run it checks which scanners are installed
+and offers to install any that are missing in one step, grouped by package manager
+(for example "trivy, gitleaks via brew; bandit, pip-audit via pipx. Install all
+now?"). Nothing is installed without that single confirmation, so you do not need
+to install the scanners by hand first.
 
 ## What it catches
 
@@ -90,8 +94,9 @@ where Row-Level Security is off or silently misconfigured. The kit ships:
 
 ## Prerequisites and licenses
 
-The scanners are external binaries you install yourself. The skill checks for them
-and offers install commands, but never installs without asking. Each keeps its own
+The scanners are external binaries. The skill checks for them on the first run and
+offers to install any that are missing in one batched step (grouped by package
+manager), but never installs without your confirmation. Each tool keeps its own
 license:
 
 | Tool | License | | Tool | License |

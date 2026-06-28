@@ -28,13 +28,24 @@ Build the in-scope tool list: the core five always, plus the language-depth tool
 for each detected ecosystem, plus GuardDog, plus hadolint when a Dockerfile
 exists, plus any opt-in tools requested.
 
-## 2. Check installs (no silent skips)
+## 2. Check installs, then offer ONE batched install (no silent skips)
 
-For each in-scope tool, check it is on PATH with `command -v <tool>`. Split the
-list into a run-list (installed) and a skipped-list (missing). For every skipped
-tool, record the reason ("not installed") and its install command from
-`reference.md`. Offer to install the missing tools, but ask the user before
-running any install command. Never silently drop a tool.
+Check each in-scope tool with `command -v <tool>`. Split the list into a run-list
+(installed) and a missing-list.
+
+If anything is missing, do NOT prompt tool by tool. Group the missing tools by
+their package manager (see the "One-shot install" grouping in `reference.md`) and
+present a single combined install with one confirmation, for example:
+
+> Missing scanners: trivy, gitleaks (brew); bandit, pip-audit (pipx). Install all
+> now? [y/N]
+
+On yes, run the grouped install commands, re-check with `command -v`, and move the
+now-installed tools to the run-list. On no, keep them in the skipped-list. Never
+install anything without that single confirmation, and never silently drop a tool:
+whatever is still missing afterward is reported under Tools skipped and Coverage
+gaps. Record each skipped tool's reason ("declined" or "no installer available")
+and its install command from `reference.md`.
 
 ## 3. Pin and note
 

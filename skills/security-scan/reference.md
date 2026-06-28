@@ -47,6 +47,19 @@ known CVE."
 | `--checkov` | Checkov | deep Terraform/CFN/K8s IaC policy | Apache-2.0 | for IaC-heavy repos |
 | `--grype` | Grype + Syft | SBOM-driven SCA | Apache-2.0 | alternative to Trivy SCA; expect overlapping findings |
 
+## One-shot install (batched, for the skill's single prompt)
+
+When tools are missing, group them by package manager and offer one combined
+install instead of prompting per tool:
+
+- Homebrew: `brew install gitleaks trufflehog semgrep trivy osv-scanner hadolint`
+- pipx: `pipx install bandit pip-audit guarddog`
+- Opt-in additions: Scorecard via `brew install scorecard`, Checkov via
+  `pipx install checkov`, Grype + Syft via `brew install grype syft`.
+
+On Linux without Homebrew, substitute the distro package manager or the tools'
+released binaries. Only install the tools that are actually in scope and missing.
+
 ## Deliberately excluded (with rationale)
 
 - **CodeQL**: not OSI open source; its license restricts automated analysis to

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1 - 2026-06-28
+
+- `security-scan` first run now offers to install all missing scanners in one
+  batched, single-confirmation step (grouped by package manager) instead of
+  prompting tool by tool. Nothing installs without that one confirmation.
+
 ## 0.1.0 - 2026-06-28
 
 Initial release.
