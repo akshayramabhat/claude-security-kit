@@ -1,7 +1,7 @@
 {
   "name": "claude-security-kit",
   "version": "0.1.5",
-  "description": "Security skills and agents for Claude Code: an OSS multi-scanner security review skill, a Postgres/Supabase RLS policy auditor agent, and a data-API lockdown kit.",
+  "description": "Install this plugin, then run /security-scan: it runs open-source security scanners (secrets, SAST, dependency CVEs, container/IaC, malicious packages) and triages them into one report. Also includes a Postgres/Supabase RLS policy auditor agent and a data-API lockdown kit.",
   "author": { "name": "Akshay Ramabhat", "email": "akshayar640@gmail.com" },
   "license": "MIT",
   "keywords": ["security", "sast", "sca", "secrets", "supply-chain", "rls", "postgres"]

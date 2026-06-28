@@ -16,6 +16,9 @@ trust; this just orchestrates them and makes the output usable.
 
 It also ships a Postgres Row-Level Security auditor and a data-API lockdown kit.
 
+In one line: install the `claude-security-kit` plugin, then run `/security-scan` in
+any project. Setup is in [Install](#install) below.
+
 ## How it works
 
 ```mermaid
