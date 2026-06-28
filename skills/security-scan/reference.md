@@ -1,0 +1,72 @@
+# security-scan reference
+
+The roster the `security-scan` skill runs, with install commands, licenses, and
+the rationale for what is in and out. The skill reads this file at run time.
+
+## Core (always run, language-agnostic)
+
+| Tool | Surface | License | Install | Run |
+|---|---|---|---|---|
+| gitleaks | secrets + git history | MIT | `brew install gitleaks` | `gitleaks detect --no-banner --redact` |
+| trufflehog | secrets with live verification | AGPL-3.0 | `brew install trufflehog` | `trufflehog filesystem . --only-verified` |
+| semgrep | multi-language SAST (CE, 3000+ rules) | LGPL-2.1 | `brew install semgrep` or `pipx install semgrep` | `semgrep scan --config auto` |
+| trivy | dep CVEs + images + IaC misconfig + licenses + SBOM | Apache-2.0 | `brew install trivy` | `trivy fs --scanners vuln,misconfig,secret,license .` |
+| osv-scanner | lockfile CVEs via Google OSV | Apache-2.0 | `brew install osv-scanner` | `osv-scanner scan source -r .` |
+
+trufflehog and gitleaks are complementary: gitleaks is fast and broad, trufflehog
+verifies that a found secret is still live. Group secrets findings by verified
+(trufflehog) vs unverified (gitleaks) in the report.
+
+## Language depth (run when the ecosystem is detected)
+
+| Tool | Surface | License | Install | Run |
+|---|---|---|---|---|
+| pip-audit | Python deps (PyPA) | Apache-2.0 | `pipx install pip-audit` | `pip-audit` |
+| bandit | Python-specific SAST idioms | Apache-2.0 | `pipx install bandit` | `bandit -r . -ll` |
+| npm/pnpm/yarn audit | JS/TS registry advisories | bundled | (with the toolchain) | `npm audit` / `pnpm audit` / `yarn npm audit` |
+
+Pick the JS audit command by the lockfile present: `package-lock.json` -> npm,
+`pnpm-lock.yaml` -> pnpm, `yarn.lock` -> yarn.
+
+## Supply-chain hardening
+
+| Tool | Surface | License | Default | Install | Run |
+|---|---|---|---|---|---|
+| GuardDog (Datadog) | malicious / typosquatted PyPI, npm, Go packages | Apache-2.0 | ON | `pipx install guarddog` | `guarddog pypi scan .` and/or `guarddog npm scan .` |
+| hadolint | Dockerfile security/lint | GPL-3.0 | ON, only when a Dockerfile exists | `brew install hadolint` | `hadolint Dockerfile` |
+
+GuardDog catches a class the CVE scanners miss: the dependency itself is hostile
+(install-script exfiltration, obfuscation, typosquatting), not merely "has a
+known CVE."
+
+## Opt-in flags (off by default)
+
+| Flag | Tool | Surface | License | Notes |
+|---|---|---|---|---|
+| `--scorecard` | OpenSSF Scorecard | repo + dependency upstream posture | Apache-2.0 | networked; best with `GITHUB_AUTH_TOKEN` |
+| `--checkov` | Checkov | deep Terraform/CFN/K8s IaC policy | Apache-2.0 | for IaC-heavy repos |
+| `--grype` | Grype + Syft | SBOM-driven SCA | Apache-2.0 | alternative to Trivy SCA; expect overlapping findings |
+
+## Deliberately excluded (with rationale)
+
+- **CodeQL**: not OSI open source; its license restricts automated analysis to
+  open-source, academic, and personal use. Do not bundle or auto-run it. Pointer
+  only: if your repo is public, enable GitHub's free CodeQL Action in CI.
+- **safety**: overlaps pip-audit, which is free and PyPA-official.
+- **OWASP Dependency-Check**: slow NVD download, Java-centric, high false
+  positives next to osv-scanner and trivy.
+- **Falco**: runtime security, not static repo scanning. Out of scope.
+
+## Supply-chain hygiene note (include in every report)
+
+Running third-party scanners is itself a small supply-chain surface. A scanner's
+own database feed was implicated in a 2026 CERT-EU breach. Prefer pinned tool
+versions and verify checksums where the installer supports it. Report the
+resolved version of each tool that runs.
+
+## License note
+
+This kit only invokes installed binaries. It does not redistribute or link any
+of these tools, so the AGPL, LGPL, and GPL tools above do not affect the kit's
+own MIT license. Anyone running the kit installs the tools themselves and is
+subject to each tool's license.
