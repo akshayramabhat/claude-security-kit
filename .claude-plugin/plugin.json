@@ -1,6 +1,6 @@
 {
   "name": "claude-security-kit",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Security skills and agents for Claude Code: an OSS multi-scanner security review skill, a Postgres/Supabase RLS policy auditor agent, and a data-API lockdown kit.",
   "author": { "name": "Akshay Ramabhat", "email": "akshayar640@gmail.com" },
   "license": "MIT",

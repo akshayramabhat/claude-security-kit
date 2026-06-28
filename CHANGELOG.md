@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.5 - 2026-06-28
+
+- When a scanner install fails on a missing native dependency (for example
+  guarddog's pygit2 needing libgit2), the skill no longer silently installs extra
+  system packages to force it through. It stops, names the dependency, and offers
+  the fix as a new explicit choice (install the library and retry, use the Docker
+  image, or skip). Documented guarddog's libgit2 requirement in the reference.
+
 ## 0.1.4 - 2026-06-28
 
 - `security-scan` now narrates as it runs: a one-line status per phase and per

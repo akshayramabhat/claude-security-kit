@@ -91,6 +91,15 @@ install without that confirmation, and never silently drop a tool: whatever is
 still missing is reported under Tools skipped and Coverage gaps, with its reason
 ("declined" or "no installer available") and install command from `reference.md`.
 
+**If an install fails on a system dependency.** Some scanners need a native
+library to build (for example guarddog pulls `pygit2`, which compiles against
+`libgit2`). If an approved install fails for this reason, do NOT silently install
+extra system packages to force it through. That goes beyond what was disclosed.
+Stop, name the missing dependency, and offer the fix as a new explicit choice:
+install the system library and retry (for example `brew install libgit2`, or
+`libgit2-dev` on Debian/Ubuntu), use the tool's Docker image, or skip the tool.
+Mark it skipped if the user declines.
+
 ## 3. Pin and note
 
 For each tool that will run, capture its resolved version (`<tool> --version`).

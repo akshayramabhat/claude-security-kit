@@ -71,6 +71,12 @@ When a manager is missing:
   official Docker image. Aqua (trivy), Truffle Security (trufflehog), hadolint, and
   semgrep all publish images, so `docker run` works when nothing else is available.
 
+Heavier dependency to watch: guarddog pulls `pygit2`, which compiles against the
+`libgit2` C library. If `pipx install guarddog` fails to build pygit2, install
+libgit2 first (`brew install libgit2`, or `libgit2-dev` on Debian/Ubuntu) and
+retry, or use guarddog's Docker image. Do not silently install libgit2 as part of
+the guarddog install; surface it as its own step. guarddog is optional.
+
 Only install the tools that are actually in scope and missing.
 
 ## Publishers and verification
