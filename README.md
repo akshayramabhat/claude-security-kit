@@ -6,6 +6,8 @@
 
 **Vibe-coded your app? Scan it before you ship.**
 
+https://github.com/user-attachments/assets/74455286-0407-47c5-88f8-9fce2a239ffd
+
 `/security-scan` runs every major open-source security scanner over your repo in
 one command (secrets, SAST, dependency CVEs, container and IaC misconfig, and
 malicious packages), then triages the raw noise into one prioritized, honest
