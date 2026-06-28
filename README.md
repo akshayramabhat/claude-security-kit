@@ -35,10 +35,10 @@ Add this repo to your Claude Code plugins, then run the skill:
 
 The skill detects your stack, runs the scanners, and writes
 `security-scan-report.md`. On the first run it checks which scanners are installed
-and offers to install any that are missing in one step, grouped by package manager
-(for example "trivy, gitleaks via brew; bandit, pip-audit via pipx. Install all
-now?"). Nothing is installed without that single confirmation, so you do not need
-to install the scanners by hand first.
+and offers to install any that are missing in one step, using whichever package
+managers you have (Homebrew, pipx, your distro's manager, or Docker, and it will
+bootstrap pipx if needed). Nothing is installed without that single confirmation,
+so you do not need to install the scanners by hand first.
 
 ## What it catches
 
@@ -95,8 +95,9 @@ where Row-Level Security is off or silently misconfigured. The kit ships:
 ## Prerequisites and licenses
 
 The scanners are external binaries. The skill checks for them on the first run and
-offers to install any that are missing in one batched step (grouped by package
-manager), but never installs without your confirmation. Each tool keeps its own
+offers to install any that are missing in one batched step, adapting to the package
+managers you actually have (brew, pipx, distro, or Docker) rather than assuming any
+one of them, but never installs without your confirmation. Each tool keeps its own
 license:
 
 | Tool | License | | Tool | License |

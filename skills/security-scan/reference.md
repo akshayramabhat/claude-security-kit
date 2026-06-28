@@ -49,16 +49,29 @@ known CVE."
 
 ## One-shot install (batched, for the skill's single prompt)
 
-When tools are missing, group them by package manager and offer one combined
-install instead of prompting per tool:
+Do not assume Homebrew or pipx exist. Detect installers first (brew, pipx, pip, the
+distro manager, go, docker), then group the missing tools by the installer you will
+actually use and offer one combined install.
+
+Preferred groupings when brew and pipx are both present:
 
 - Homebrew: `brew install gitleaks trufflehog semgrep trivy osv-scanner hadolint`
 - pipx: `pipx install bandit pip-audit guarddog`
 - Opt-in additions: Scorecard via `brew install scorecard`, Checkov via
   `pipx install checkov`, Grype + Syft via `brew install grype syft`.
 
-On Linux without Homebrew, substitute the distro package manager or the tools'
-released binaries. Only install the tools that are actually in scope and missing.
+When a manager is missing:
+
+- No pipx but Python present: bootstrap with
+  `python3 -m pip install --user pipx && pipx ensurepath` (or `brew install pipx`).
+  semgrep, bandit, pip-audit, and guarddog are pure-Python and install via pipx on
+  any OS.
+- No Homebrew (common on Linux): for the native tools use the distro package
+  (apt/dnf/pacman), the tool's released binary from its source repo, or its
+  official Docker image. Aqua (trivy), Truffle Security (trufflehog), hadolint, and
+  semgrep all publish images, so `docker run` works when nothing else is available.
+
+Only install the tools that are actually in scope and missing.
 
 ## Publishers and verification
 

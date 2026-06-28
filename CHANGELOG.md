@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.3 - 2026-06-28
+
+- The install step no longer assumes Homebrew or pipx. It detects the available
+  package managers (brew, pipx, pip, distro, go, docker), bootstraps pipx via pip
+  when it is missing, and falls back to distro packages, released binaries, or
+  official Docker images when Homebrew is absent. A tool with no available
+  installer is reported as skipped instead of failing silently.
+
 ## 0.1.2 - 2026-06-28
 
 - Before installing any scanner, `security-scan` now discloses what it would

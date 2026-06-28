@@ -33,18 +33,33 @@ exists, plus any opt-in tools requested.
 Check each in-scope tool with `command -v <tool>`. Split the list into a run-list
 (installed) and a missing-list.
 
-If anything is missing, do NOT prompt tool by tool. First disclose, then offer one
-install.
+If anything is missing, do NOT prompt tool by tool. Pick an installer, disclose,
+then offer one install.
+
+**Pick an installer that actually exists.** Do not assume Homebrew or pipx are
+present. Detect what is available with `command -v` (brew, pipx, pip3/pip, the
+distro manager such as apt-get/dnf/pacman, go, docker). For each missing tool,
+choose the best available path from the "One-shot install" guidance in
+`reference.md`:
+
+- The Python tools (semgrep, bandit, pip-audit, guarddog) install via pipx on any
+  OS. If pipx is missing but Python is present, offer to bootstrap it first with
+  `python3 -m pip install --user pipx && pipx ensurepath` (or `brew install pipx`).
+- The native tools (gitleaks, trufflehog, trivy, osv-scanner, hadolint) install via
+  brew when present, else the distro package, the tool's released binary, or its
+  official `docker` image.
+
+If no installer fits a tool on this system, do not fail or guess: report it skipped
+with its source link so the user can install it by hand.
 
 **Disclose what you would install.** For every missing tool, show its publisher,
 one-line purpose, the exact command that will run, and its audit link (from the
-"Publishers and verification" table in `reference.md`). Install only through the
-user's existing package managers (Homebrew, pipx). Never pipe a remote script into
-a shell (`curl ... | sh`), even if a tool documents one.
+"Publishers and verification" table in `reference.md`). Never pipe a remote script
+into a shell (`curl ... | sh`), even if a tool documents one.
 
-**Offer one choice.** Group the missing tools by package manager and present a
-single prompt that lets the user run the batched install, run the exact commands
-themselves, or install a subset. For example:
+**Offer one choice.** Group the missing tools by the installer you chose and
+present a single prompt that lets the user run the batched install, run the exact
+commands themselves, or install a subset. For example:
 
 > Missing scanners (all open source, installed via brew/pipx):
 >   trivy (Aqua Security)  -> brew install trivy   (github.com/aquasecurity/trivy)
