@@ -71,10 +71,10 @@ Produce a terse report, no preamble:
 ## RLS Review: <scope>
 
 ### BLOCKERS (must fix before merge)
-- <file:line> — <issue> — <required fix>
+- <file:line>: <issue>. Fix: <required fix>
 
 ### WARNINGS (review before merge)
-- <file:line> — <issue> — <suggested mitigation>
+- <file:line>: <issue>. Mitigation: <suggested mitigation>
 
 ### OK
 - <brief list of what was checked and passed>

@@ -1,0 +1,35 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate plugin manifest
+        run: python -c "import json; json.load(open('.claude-plugin/plugin.json')); print('manifest ok')"
+      - name: Validate skill frontmatter
+        run: |
+          python - <<'PY'
+          t = open('skills/security-scan/SKILL.md').read()
+          assert t.startswith('---'), 'missing frontmatter'
+          assert 'name: security-scan' in t
+          assert t.count('---') >= 2
+          print('skill frontmatter ok')
+          PY
+      - name: Structural SQL check
+        run: |
+          python - <<'PY'
+          import glob
+          for f in sorted(glob.glob('templates/rls/*.sql')):
+              code = "\n".join(l for l in open(f) if not l.strip().startswith('--'))
+              assert code.count('(') == code.count(')'), f
+              assert code.strip().endswith(';'), f
+          print('sql ok')
+          PY
