@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.4 - 2026-06-28
+
+- `security-scan` now narrates as it runs: a one-line status per phase and per
+  scanner (tool, what it covers, finding count, time), with a running tally.
+  Raw scanner output stays out of the conversation and only lands in the report,
+  so the live view is readable, not noisy.
+
 ## 0.1.3 - 2026-06-28
 
 - The install step no longer assumes Homebrew or pipx. It detects the available

@@ -13,6 +13,24 @@ file. Read it before you start.
 Run the procedure below in order. Do not skip steps. Never claim a repo is clean
 when tools were skipped.
 
+## Narrate as you go (readable, not noisy)
+
+The user should be able to follow what is happening in real time without drowning
+in raw scanner output. As you work, emit short, scannable status lines:
+
+- Announce each phase in one line: the scan target and what was detected, the
+  in-scope tool list, the install decision, then triage and the report.
+- For each scanner, print one line when it finishes: a marker, the tool, what it
+  covers, its finding count, and roughly how long it took. For example:
+  - `✓ gitleaks (secrets): 1 finding · 0.4s`
+  - `✓ trivy (deps + misconfig): 12 CVEs, 4 misconfigs · 6s`
+  - `· bandit (Python SAST): 0 findings · 1s`
+  - `⊘ guarddog (malicious pkgs): skipped, not installed`
+- A compact running tally is welcome, for example `running 4 of 9 scanners`.
+- Do NOT paste raw scanner output into the conversation. Full details belong in
+  `security-scan-report.md`; the live narration is a readable running summary only.
+- Keep every line terse. One line per event. No banners, no walls of text.
+
 ## 1. Detect
 
 Determine the scan target (default: the current repo root, or a path the user
@@ -82,8 +100,10 @@ prefer pinned versions where the user controls installation.
 ## 4. Run
 
 Run each in-scope, installed scanner from the scan target using the exact commands
-in `reference.md`. Capture stdout and stderr for each. If a tool errors, that is
-itself a reported result; do not silently drop it.
+in `reference.md`. Capture stdout and stderr for each. As each scanner finishes,
+print its one-line result (see "Narrate as you go"). If a tool errors, that is
+itself a reported result, shown on its line and in the report; do not silently
+drop it.
 
 ## 5. Triage
 
