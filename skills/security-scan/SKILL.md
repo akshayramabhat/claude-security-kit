@@ -33,19 +33,30 @@ exists, plus any opt-in tools requested.
 Check each in-scope tool with `command -v <tool>`. Split the list into a run-list
 (installed) and a missing-list.
 
-If anything is missing, do NOT prompt tool by tool. Group the missing tools by
-their package manager (see the "One-shot install" grouping in `reference.md`) and
-present a single combined install with one confirmation, for example:
+If anything is missing, do NOT prompt tool by tool. First disclose, then offer one
+install.
 
-> Missing scanners: trivy, gitleaks (brew); bandit, pip-audit (pipx). Install all
-> now? [y/N]
+**Disclose what you would install.** For every missing tool, show its publisher,
+one-line purpose, the exact command that will run, and its audit link (from the
+"Publishers and verification" table in `reference.md`). Install only through the
+user's existing package managers (Homebrew, pipx). Never pipe a remote script into
+a shell (`curl ... | sh`), even if a tool documents one.
 
-On yes, run the grouped install commands, re-check with `command -v`, and move the
-now-installed tools to the run-list. On no, keep them in the skipped-list. Never
-install anything without that single confirmation, and never silently drop a tool:
-whatever is still missing afterward is reported under Tools skipped and Coverage
-gaps. Record each skipped tool's reason ("declined" or "no installer available")
-and its install command from `reference.md`.
+**Offer one choice.** Group the missing tools by package manager and present a
+single prompt that lets the user run the batched install, run the exact commands
+themselves, or install a subset. For example:
+
+> Missing scanners (all open source, installed via brew/pipx):
+>   trivy (Aqua Security)  -> brew install trivy   (github.com/aquasecurity/trivy)
+>   gitleaks (Gitleaks)    -> brew install gitleaks (github.com/gitleaks/gitleaks)
+>   bandit (PyCQA)         -> pipx install bandit   (github.com/PyCQA/bandit)
+> Run these for you, paste them to run yourself, or pick a subset? [run / self / pick / skip]
+
+On approval, run only the approved commands, re-check with `command -v`, confirm
+each with `<tool> --version`, and move installed tools to the run-list. Never
+install without that confirmation, and never silently drop a tool: whatever is
+still missing is reported under Tools skipped and Coverage gaps, with its reason
+("declined" or "no installer available") and install command from `reference.md`.
 
 ## 3. Pin and note
 

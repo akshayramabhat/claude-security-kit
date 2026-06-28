@@ -108,6 +108,14 @@ license:
 | osv-scanner | Apache-2.0 | | Grype / Syft | Apache-2.0 |
 | pip-audit | Apache-2.0 | | bandit | Apache-2.0 |
 
+Before it installs anything, the skill shows you exactly what it would run: each
+tool's publisher, the precise `brew` or `pipx` command, and a link to its source so
+you can audit it. It installs only through your existing package managers, never by
+piping a script into your shell, and you can always choose to run the commands
+yourself instead. Confirm any tool with `<tool> --version`. The publisher and
+source for each scanner are listed in
+[`skills/security-scan/reference.md`](skills/security-scan/reference.md).
+
 This kit only invokes installed binaries. It does not redistribute or link any
 scanner, so the AGPL, LGPL, and GPL tools above do not affect its own MIT license.
 Running third-party scanners is itself a small supply-chain surface, so pin tool

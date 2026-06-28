@@ -60,6 +60,29 @@ install instead of prompting per tool:
 On Linux without Homebrew, substitute the distro package manager or the tools'
 released binaries. Only install the tools that are actually in scope and missing.
 
+## Publishers and verification
+
+Install scanners only through the user's existing package managers (Homebrew,
+pipx), which fetch from official sources and verify integrity. Never pipe a remote
+script into a shell (`curl ... | sh`). After install, confirm each tool with
+`<tool> --version`. Every tool is open source; here is who publishes each and where
+to audit it:
+
+| Tool | Publisher | Source |
+|---|---|---|
+| gitleaks | Gitleaks | github.com/gitleaks/gitleaks |
+| trufflehog | Truffle Security | github.com/trufflesecurity/trufflehog |
+| semgrep | Semgrep, Inc. | github.com/semgrep/semgrep |
+| trivy | Aqua Security | github.com/aquasecurity/trivy |
+| osv-scanner | Google (OSV) | github.com/google/osv-scanner |
+| pip-audit | PyPA | github.com/pypa/pip-audit |
+| bandit | PyCQA | github.com/PyCQA/bandit |
+| guarddog | Datadog | github.com/DataDog/guarddog |
+| hadolint | hadolint | github.com/hadolint/hadolint |
+| OpenSSF Scorecard | OpenSSF | github.com/ossf/scorecard |
+| Checkov | Prisma Cloud (Bridgecrew) | github.com/bridgecrewio/checkov |
+| Grype / Syft | Anchore | github.com/anchore/grype |
+
 ## Deliberately excluded (with rationale)
 
 - **CodeQL**: not OSI open source; its license restricts automated analysis to

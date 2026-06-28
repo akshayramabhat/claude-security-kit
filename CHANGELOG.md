@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2 - 2026-06-28
+
+- Before installing any scanner, `security-scan` now discloses what it would
+  install: each tool's publisher, the exact `brew`/`pipx` command, and a link to
+  its source to audit. Installs only via the user's package managers (never
+  `curl | sh`), and the user can run the commands themselves instead. Added a
+  "Publishers and verification" table to the scanner reference.
+
 ## 0.1.1 - 2026-06-28
 
 - `security-scan` first run now offers to install all missing scanners in one
